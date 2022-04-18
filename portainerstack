@@ -3,7 +3,7 @@ version: "1"
 services:
   emby:
   jellyfin:
-	image: linuxserver/jellyfin
+    image: linuxserver/jellyfin
     container_name: jellyfin
     environment:
       - PUID=1000
@@ -14,8 +14,8 @@ services:
       - /home/pi/Configs/Jellyfin:/config
       - /home/pi/TV:/data/TV
       - /home/pi/Movies:/data/Movies
-	  - /home/pi/Music:/data/Music
-	  - /home/pi/Videos:/data/Videos
+      - /home/pi/Music:/data/Music
+      - /home/pi/Videos:/data/Videos
     ports:
       - 8096:8096
     restart: unless-stopped   
