@@ -1,36 +1,25 @@
 ---
-version: "2"
+version: "1"
 services:
   emby:
-    image: linuxserver/emby
-    container_name: emby
+  jellyfin:
+	image: linuxserver/jellyfin
+    container_name: jellyfin
     environment:
-      - PUID=998
-      - PGID=100
+      - PUID=1000
+      - PGID=1000
       - TZ=Europe/Oslo
       - UMASK_SET=022 #optional
     volumes:
-      - /home/pi/Configs/Emby:/config
-      - /home/pi/TV:/data/tvshows
-      - /home/pi/Movies:/data/movies
+      - /home/pi/Configs/Jellyfin:/config
+      - /home/pi/TV:/data/TV
+      - /home/pi/Movies:/data/Movies
+	  - /home/pi/Music:/data/Music
+	  - /home/pi/Videos:/data/Videos
     ports:
       - 8096:8096
-      - 8920:8920 #optional for secure connections
-    restart: unless-stopped
-    
-  embystat:
-    image: ghcr.io/linuxserver/embystat
-    container_name: embystat
-    environment:
-      - PUID=998
-      - PGID=100
-      - TZ=Europe/Oslo
-    volumes:
-      - /home/pi/Configs/EmbyStat:/config
-    ports:
-      - 6555:6555
-    restart: unless-stopped
-    
+    restart: unless-stopped   
+	
   jackett:
     image: linuxserver/jackett
     container_name: jackett
