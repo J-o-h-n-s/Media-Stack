@@ -1,5 +1,6 @@
-<h1># Media-Stack</h1>
+<h1>Media-Stack</h1>
 Media Docker-Compose stack for use either through CLI or portainer.
+
 
 
 <b>Current config:</b>
