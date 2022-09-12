@@ -1,0 +1,15 @@
+tasks:
+  move-series-rar:
+    accept_all: yes
+    filesystem:
+      path: /mnt/bigdisk/Media/complete
+      recursive: yes
+      mask: '*.rar'
+      #regexp: '\.(rar|r0+[01]|zip)'
+    decompress:
+      delete_archive: yes
+
+schedules:
+  - tasks: "*"
+    interval:
+      minutes: 15
