@@ -16,6 +16,16 @@ services:
       - 127.0.0.1:9117:9117
     restart: unless-stopped
     network_mode: bridge
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+    healthcheck:
+      test: curl ifconfig.co
+      interval: 60s
+      retries: 5
+      start_period: 20s
+      timeout: 10s
     
   radarr:
     image: linuxserver/radarr
@@ -34,6 +44,16 @@ services:
       - 127.0.0.1:7878:7878
     restart: unless-stopped
     network_mode: bridge
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+    healthcheck:
+      test: curl ifconfig.co
+      interval: 60s
+      retries: 5
+      start_period: 20s
+      timeout: 10s
     
   sonarr:
     image: linuxserver/sonarr
@@ -52,6 +72,16 @@ services:
       - 127.0.0.1:8989:8989
     restart: unless-stopped
     network_mode: bridge
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+    healthcheck:
+      test: curl ifconfig.co
+      interval: 60s
+      retries: 5
+      start_period: 20s
+      timeout: 10s
   
   transmission:
     image: linuxserver/transmission:latest
@@ -71,6 +101,16 @@ services:
       - 50003:50003/udp
     restart: unless-stopped
     network_mode: bridge
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+    healthcheck:
+      test: curl ifconfig.co
+      interval: 60s
+      retries: 5
+      start_period: 20s
+      timeout: 10s
 
   flame:
     image: pawelmalak/flame
@@ -84,3 +124,13 @@ services:
       - PASSWORD=$FLAMEPASS
     restart: unless-stopped
     network_mode: bridge
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+    healthcheck:
+      test: curl ifconfig.co
+      interval: 60s
+      retries: 5
+      start_period: 20s
+      timeout: 10s
