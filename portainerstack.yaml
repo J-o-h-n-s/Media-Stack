@@ -1,0 +1,86 @@
+---
+version: "3.6"
+services:
+  jackett:
+    image: linuxserver/jackett
+    container_name: jackett
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Amsterdam
+    volumes:
+      - /usr/local/mediastack/Jackett:/config
+      - /mnt/bigdisk/Media/complete:/data/completed
+      - /mnt/bigdisk/Media/complete:/downloads
+    ports:
+      - 9117:9117
+    restart: unless-stopped
+    network_mode: bridge
+    
+  radarr:
+    image: linuxserver/radarr
+    container_name: radarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Amsterdam
+      - UMASK_SET=022
+    volumes:
+      - /usr/local/mediastack/Radarr:/config
+      - /mnt/bigdisk/Media/Movies:/movies
+      - /mnt/bigdisk/Media/complete:/data/completed
+      - /mnt/bigdisk/Media/complete:/downloads
+    ports:
+      - 127.0.0.1:7878:7878
+    restart: unless-stopped
+    network_mode: bridge
+    
+  sonarr:
+    image: linuxserver/sonarr
+    container_name: sonarr
+    environment:
+      - PUID=0
+      - PGID=0
+      - TZ=Europe/Amsterdam
+      - UMASK_SET=022
+    volumes:
+      - /usr/local/mediastack/Sonarr:/config
+      - /mnt/bigdisk/Media/TV:/tv
+      - /mnt/bigdisk/Media/complete:/data/completed
+      - /mnt/bigdisk/Media/complete:/downloads
+    ports:
+      - 8989:8989
+    restart: unless-stopped
+    network_mode: bridge
+  
+  transmission:
+    image: linuxserver/transmission:latest
+    container_name: transmission
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Amsterdam
+      - PEERPORT=50003
+    volumes:
+      - /usr/local/mediastack/trans/data:/data
+      - /mnt/bigdisk/Media/complete:/downloads/complete
+      - /mnt/bigdisk/Media/incomplete:/downloads/incomplete
+    ports:
+      - 9091:9091
+      - 50003:50003
+      - 50003:50003/udp
+    restart: unless-stopped
+    network_mode: bridge
+
+  flame:
+    image: pawelmalak/flame
+    container_name: flame
+    volumes:
+      - /usr/local/mediastack/flame:/app/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 7889:5005
+    environment:
+      - PASSWORD=$FLAMEPASS
+    restart: unless-stopped
+    network_mode: bridge
