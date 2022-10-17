@@ -14,8 +14,9 @@ services:
       - /mnt/bigdisk/Media/complete:/downloads
     ports:
       - 127.0.0.1:9117:9117
+    networks: 
+    - net
     restart: unless-stopped
-    network_mode: bridge
     logging:
       driver: json-file
       options:
@@ -26,7 +27,7 @@ services:
       retries: 5
       start_period: 20s
       timeout: 10s
-    
+  
   radarr:
     image: linuxserver/radarr
     container_name: radarr
@@ -34,16 +35,17 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=Europe/Amsterdam
-      - UMASK_SET=022
+      - UMASK_SET=022 #optional
     volumes:
       - /usr/local/mediastack/Radarr:/config
       - /mnt/bigdisk/Media/Movies:/movies
       - /mnt/bigdisk/Media/complete:/data/completed
-      - /mnt/bigdisk/Media/complete:/downloads
+      - /mnt/bigdisk/Media/complete:/downloads/complete
     ports:
       - 127.0.0.1:7878:7878
+    networks: 
+    - net
     restart: unless-stopped
-    network_mode: bridge
     logging:
       driver: json-file
       options:
@@ -54,7 +56,7 @@ services:
       retries: 5
       start_period: 20s
       timeout: 10s
-    
+
   sonarr:
     image: linuxserver/sonarr
     container_name: sonarr
@@ -67,11 +69,12 @@ services:
       - /usr/local/mediastack/Sonarr:/config
       - /mnt/bigdisk/Media/TV:/tv
       - /mnt/bigdisk/Media/complete:/data/completed
-      - /mnt/bigdisk/Media/complete:/downloads
+      - /mnt/bigdisk/Media/complete:/downloads/complete
     ports:
       - 127.0.0.1:8989:8989
+    networks: 
+    - net
     restart: unless-stopped
-    network_mode: bridge
     logging:
       driver: json-file
       options:
@@ -82,7 +85,7 @@ services:
       retries: 5
       start_period: 20s
       timeout: 10s
-  
+
   transmission:
     image: linuxserver/transmission:latest
     container_name: transmission
@@ -99,8 +102,9 @@ services:
       - 127.0.0.1:9091:9091
       - 50003:50003
       - 50003:50003/udp
+    networks: 
+    - net
     restart: unless-stopped
-    network_mode: bridge
     logging:
       driver: json-file
       options:
@@ -121,9 +125,10 @@ services:
     ports:
       - 127.0.0.1:7889:5005
     environment:
-      - PASSWORD=$FLAMEPASS
-    restart: unless-stopped
+      - PASSWORD_FILE=/usr/local/mediastack/secret/password
+      - PASSWORD=Kake112233
     network_mode: bridge
+    restart: unless-stopped
     logging:
       driver: json-file
       options:
@@ -134,3 +139,32 @@ services:
       retries: 5
       start_period: 20s
       timeout: 10s
+
+jellyfin:
+  image: linuxserver/jellyfin:latest
+  container_name: jellyfin
+  volumes:
+  - /usr/local/mediastack/jellyfin:/config
+  - /mnt/bigdisk/Media/TV:/tv
+  - /mnt/bigdisk/Media/Movies:/movies
+  ports:
+  - 127.0.0.1:8096:8096
+  restart: unless-stopped
+  network_mode: bridge
+  logging:
+    driver: json-file
+    options:
+      max-size: 10m
+  healthcheck:
+    test: curl ifconfig.co
+    interval: 60s
+    retries: 5
+    start_period: 20s
+    timeout: 10s
+
+networks:
+  net:
+
+secrets:
+  password:
+      file: /usr/local/mediastack/secret/password
