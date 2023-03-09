@@ -16,6 +16,6 @@ Transmission
 Flame
 
 
-NOTE: The ports are boud to the loopback IP, so you will not be able to access the services remotely. Use Cloudflared Tunnels if this is something you want. 
+NOTE: The ports are boud to  loopback, so you will not be able to access the services remotely. Use Cloudflared Tunnels if this is something you want. 
 Point the tunnels to localhost:[PORT OF SERVICE]
 
